@@ -3,3 +3,6 @@
 *.toc
 *.aux
 .gout*
+*.out
+*.xml
+
