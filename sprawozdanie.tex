@@ -1,27 +1,26 @@
-
 \documentclass[a4paper,12pt]{article}
 \usepackage{graphicx}
 \usepackage[polish]{babel}
-\usepackage[utf8]{inputenc}
-%\usepackage[cp1250]{inputenc} % to uzywamy na windowsie
-\usepackage[T1]{fontenc}
-%\usepackage[OT4]{fontenc} % to tez 
+%\usepackage[utf8]{inputenc}
+\usepackage[cp1250]{inputenc} % to uzywamy na windowsie
+%\usepackage[T1]{fontenc}
+\usepackage[OT4]{fontenc} % to tez 
 \usepackage{url}
 \usepackage{hyperref}
 \linespread{1.0}
 
-\hyphenation{Eks-plo-ra-cji}
+\hyphenation{Eks-plo-ra-cji zwi¹-za-nych ka¿-de-go pew-nych}
 
-\title{ReguÅ‚y asocjacyjne w analizie wybranych kursÃ³w walut}
+\title{Regu³y asocjacyjne w analizie danych}
 
-\author{K.~KrÃ³l\\
-M.~K.~KarpiÅ„ski\\
+\author{K.~Król\\
+M.~K.~Karpiñski\\
 \\
-Uniwersytet WrocÅ‚awski\\
+Uniwersytet Wroc³awski\\
 Instytut Informatyki\\
 SPRAWOZDANIE Z PROJEKTU}
 
-\date{WrocÅ‚aw, dnia \today\ r.}
+\date{Wroc³aw, dnia \today\ r.}
 
 \begin{document}
 \thispagestyle{empty}
@@ -34,29 +33,221 @@ SPRAWOZDANIE Z PROJEKTU}
 \newpage
 
 
-%\begin{figure}[h]
-%\begin{center}$
-%\begin{array}{cc}
-%\includegraphics[scale=0.25,angle=0]{plot1.png} & \includegraphics[scale=0.25,angle=0]{plot2.png} \\
-%\includegraphics[scale=0.25,angle=0]{plot3.png} & \includegraphics[scale=0.25,angle=0]{plot4.png}
-%\end{array}$
-%\caption{Wyresy funkcji, na ktÃ³rych przeprowadzane sÄ… testy.}
-%\end{center}
-%\end{figure}
 
-\section{WstÄ™p}
-\indent \indent Dokument ten zostaÅ‚ sporzÄ…dzony jako sprawozdanie do projektu z przedmiotu: Eksploracja Danych.
+\section{Wstêp}
+\indent \indent Dokument ten zosta³ sporz¹dzony jako sprawozdanie do projektu z przedmiotu: Eksploracja Danych. Projekt ma na celu zbadanie danych ze œwiata rzeczywistego w poszukiwaniu ciekawych regu³ asocjacyjnych z nimi zwi¹zanych.
+
+Kolejne rozdzia³y niniejszego sprawozdania zawieraj¹ opis sporz¹dzonych eksperymentów, pocz¹wszy od znalezionych danych i wykorzystanego oprogramowania, poprzez testy w³aœciwe, koñcz¹c krótkim podsumowaniem wykonanego zadania. 
 
 \section{Dane}
 
-\indent \indent Dane wykorzystane w projeckie zostaÅ‚y pobrane ze strony \url{http://nlp.uned.es/social-tagging/wiki10+/}.
+\indent \indent Dane wykorzystane w projekcie zosta³y pobrane ze strony \url{http://repository.seasr.org/Datasets/UCI/arff/vote.arff}. Dane te 
+zawieraj¹ g³osy ka¿dego z kongresmenów U.S. House of Representatives dotycz¹cych
+16 istotnych problemów publicznych w roku 1984. Docelowo ten zbiór danych
+wykorzystywano do klasyfikacji ludzi na demokratów/republikanów w zale¿noœci od stosunku do
+podanych problemów:
+
+\begin{enumerate}
+\item handicapped-infants
+\item water-project-cost-sharing
+\item adoption-of-the-budget-resolution
+\item physician-fee-freeze
+\item el-salvador-aid
+\item religious-groups-in-schools
+\item anti-satellite-test-ban
+\item aid-to-nicaraguan-contras
+\item mx-missile
+\item immigration
+\item synfuels-corporation-cutback
+\item education-spending
+\item superfund-right-to-sue
+\item crime
+\item duty-free-exports
+\item export-administration-act-south-africa
+\end{enumerate}
+
+Liczba demokratów i republikanów kszta³towa³a siê nastêpuj¹co (demokraci - kolor niebieski, republikanie - kolor czerwony):
+\begin{center}
+\includegraphics[scale=1.0]{democrat&republican.png}
+\end{center}
+
+G³osy typu 'voted for', 'paired for', 'announced for' zosta³y sklasyfikowane jako g³osy 'yes',
+'voted against', 'paired against', 'announced against' jako g³osy 'no', a g³osy 'voted present', 'voted present to avoid conflict of interest'
+i brak g³osu zosta³y sklasyfikowane jako 'unknown' (oznaczone przez '?'). Poni¿ej widaæ tabele, na których oznaczone s¹ g³osy za i przeciw z podzia³em
+na demokratów i republikanów (lewa kolumna - g³osy 'no', prawa kolumna - g³osy 'yes'):
+\begin{center}
+\includegraphics[scale=0.6]{voting.png}
+\end{center}
+
+Jak ju¿ wspomniano, danych tych u¿yto do klasyfikacji g³osuj¹cych. Mo¿na jednak spojrzeæ na te dane inaczej i spróbowaæ wyszukiwaæ pewnych tendencji w g³osowaniu na niektóre problemy. Chcemy dokonaæ tego poprzez wydobycie ciekawych regu³ asocjacyjnych zwi¹zanych z powy¿szymi danymi.
+
 \section{Oprogramowanie}
+
+\indent \indent Do wykonanie eksperymentów pos³u¿yliœmy siê programem wspomagaj¹cym eksploracjê danych WEKA dostêpnym na stronie: \url{http://www.cs.waikato.ac.nz/ml/weka/}.
 
 \section{Algorytmy}
 
+\indent \indent Wykorzystaliœmy niektóre algorytmy dostêpne w programie WEKA:
+
+\begin{enumerate}
+\item Apriori
+\item FPGrowth
+\item Tertius
+\end{enumerate}
+
+\subsection{Apriori}
+
+Algorytm apriori by³ szeroko omawiany na wyk³adzie, dlatego te¿ pominiemy jego opis w niniejszej pracy.
+
+\subsection{FPGrowth}
+
+Algorytm FPGrowth korzysta z oszczêdnej (pod wzglêdem pamiêciowym) struktury FP-drzewa.
+Definicja FP-drzewa:
+\begin{itemize}
+\item ukorzeniony, etykietowany graf acykliczny
+\item korzeñ posiada etykietê 'null', pozosta³e wierzcho³ki reprezentuj¹ 1-elementowe zbiory czêste
+\item ka¿dy wierzcho³ek zawiera ponadto liczbê transakcji wspieraj¹cych dany zbiór czêsty
+\end{itemize}
+Algorytm opiera siê na dwóch krokach:
+\begin{enumerate}
+\item Kompresja bazy danych $D$ i przekszta³cenie do FP-drzewa
+\item Eksploracja FP-drzewa
+\end{enumerate}
+W $1$ kroku znajduje siê najpierw wszystkie $1$-elementowe zbiory czêste w bazie D. Nastêpnie,
+ka¿d¹ tranksakcjê $T_i \in D$ zamienia siê na skompresowan¹ transakcjê $T_{r_i} \in D$ usuwaj¹c
+z $T_i$ wszystkie elementy, które nie s¹ czêste. W ostatniej fazie, skompresowane transkacje s¹ sortowane
+malej¹co po wartoœci wsparcia.
+Nastêpnie konstruowane jest FP-drzewo:
+\begin{enumerate}
+\item utwórz korzeñ z etykiet¹ 'null'
+\item Dla ka¿dej transakcji $T_{r_i}$ utwórz œcie¿kê w FP-drzewie. Transakcje o wspólnym prefiksie, wspó³dziel¹ istniej¹ce œcie¿ki.
+W przypadku wyst¹pienia ró¿nicy, œcie¿ka jest rozdzielana. Ostatni wêze³ œcie¿ki zawiera liczbê transakcji wspieraj¹cych zbiór
+elementów reprezentowany przez ca³¹ œcie¿kê.
+\end{enumerate}
+Ponadto przechowuje siê 'tablicê nag³ówków elementów', która to jest tablic¹ wskaŸników na poszczególne elementy w drzewie,
+co przyspiesza i u³atwia przeszukiwanie drzewa.
+
+W $2$ kroku, nastêpuje eksploracja uprzednio przygotowanego FP-drzewa. Porces ten opiera siê na obserwacji,
+¿e dla ka¿dego $1$-elementowego zbioru czêstego $\alpha$, wszystkie czêste nadzbiory zbioru $\alpha$ s¹ reprezentowane
+przez œcie¿kê zawieraj¹c¹ œcie¿kê dla $\alpha$.
+Zatem eksploracja drzewa przebiega nastêpuj¹co:
+\begin{enumerate}
+\item Dla ka¿dego $1$-elementowego zbioru czêestego $\alpha$ znajdujemy wszystkie œcie¿ki w drzewie, które koñcz¹ siê wierzcho³kiem $\alpha$
+\item Œcie¿k¹ prefiksow¹ wzorca $\alpha$ nazwiemy œcie¿kê, która koñczy siê wierzcho³kiem $\alpha$. Zbiór wszystkich œcie¿ek prefiksowych wzorca
+tworzy warunkow¹ bazê wzorca. Na podstawie warunkowej bazy wzorca tworzymy warunkowe FP-drzewo wzorca $\alpha$: $Tree-\alpha$.
+\item Nastêpnie wywo³ujemy siê rekurencyjnie dla drzewa $Tree-\alpha$ w celu znalezienia wszystkich zbiorów czêstych zawieraj¹cych $\alpha$.
+\end{enumerate}
+
+Konstrukcja FP-drzewa wymaga $O(|D|)$ czasu, natomiast $2.$ krok wymaga $O(|$tablica nag³ówków$|^2 \times $g³êbokoœæ FP-drzewa$)$.
+W odró¿nieniu od $Apriori$, $FPGrowth$ nie wymaga za³adowania do pamiêci ca³ej bazy danych.
+
+\subsection{Tetrius}
+
+Algorytm Tetrius
+
+W testach wykorzystaliœmy ró¿ne formy parametryzacji w celu dog³êbnej analizy danych.
+
 \section{Analiza Danych}
 
-\section{Wnioski}
+\indent \indent Poni¿ej znajduje siê podsumowanie 7-miu testów wykonanych ró¿nymi algorytmami z ró¿nym stopniem parametryzacji. Po wykonaniu testów liczba znalezionych regu³ by³a zbyt du¿a, aby w czytelnej formie zaprezentowaæ je w niniejszej pracy. Dlatego pod ka¿dym z testów znajduje siê krótkie podsumowanie wraz kilkoma rêcznie wybranymi, ciekawymi (wed³ug autorów) regu³ami asocjacyjnymi.
+
+\subsection{Apriori 1}
+\begin{itemize}
+\item Parametry: -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1 
+\item Metryka: confidence
+\item Ciekawsze regu³y:
+  \begin{itemize}
+    \item adoption-of-the-budget-resolution=y physician-fee-freeze=n $->$ Class=democrat
+    \item physician-fee-freeze=n aid-to-nicaraguan-contras=y $->$ Class=democrat
+    \item el-salvador-aid=n aid-to-nicaraguan-contras=y $->$ Class=democrat
+  \end{itemize}
+\item Wniosek: standardowy zestaw parametrów polecany przez program nie daje spodziewanych rezultatów. Otrzymaliœmy same regu³y klasyfikuj¹ce demokratów. Nie mniej jednak z otrzymanego zestawu regu³ mo¿na wydobyæ jak¹œ wiedzê: demokraci maj¹ podobne zdanie na temat niektórych problemów spo³ecznych. Republikanie bardziej ró¿ni¹ siê w swoich pogl¹dach.
+\end{itemize}
+
+\subsection{Apriori 2}
+\begin{itemize}
+\item Parametry: -N 10 -T 1 -C 1.1 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1 
+\item Metryka: lift
+\item Ciekawsze regu³y:
+  \begin{itemize}
+    \item physician-fee-freeze=n $->$ Class=democrat
+    \item Class=democrat $->$ physician-fee-freeze=n
+    \item adoption-of-the-budget-resolution=y $->$ physician-fee-freeze=n
+    \item physician-fee-freeze=n $->$ adoption-of-the-budget-resolution=y
+  \end{itemize}
+\item Wniosek: zmiana metryki i lekka zmiana parametrów zaowocowa³a dwoma nowymi wnioskami: pierwszy znów dotyczy klasyfikacji. Zauwa¿my, ¿e dwie pierwsze regu³y tworz¹ równowa¿noœæ. Dostajemy wiêc mocn¹ zale¿noœæ miêdzy problemem physician-fee-freeze a byciem demokrat¹. Drugi wniosek jest dla nas bardziej interesuj¹cy. Kolejne dwie regu³y równie¿ tworz¹ równowa¿noœæ, co daje nam mocn¹ zale¿noœæ miêdzy problemami adoption-of-the-budget-resolution a physician-fee-freeze.
+\end{itemize}
+
+\subsection{Apriori 3}
+\begin{itemize}
+\item Parametry: -N 20 -T 2 -C 0.1 -D 0.1 -U 1.0 -M 0.2 -S -1.0 -c -1
+\item Metryka: leverage
+\item Ciekawsze regu³y:
+  \begin{itemize}
+    \item anti-satellite-test-ban=y physician-fee-freeze=n aid-to-nicaraguan-contras=y $->$ el-salvador-aid=n
+    \item el-salvador-aid=n $->$ physician-fee-freeze=n anti-satellite-test-ban=y aid-to-nicaraguan-contras=y
+  \end{itemize}
+\item Wniosek: zwiêkszenie liczby poszukiwanych regu³ oraz kolejna zmiana metryki da³y nam ciekawsze wyniki. 
+\end{itemize}
+
+\subsection{FPGrowth 1}
+\begin{itemize}
+\item Parametry: -P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1
+\item Metryka: confidence
+\item Ciekawsze regu³y:
+  \begin{itemize}
+    \item el-salvador-aid=y, Class=republican: $->$ physician-fee-freeze=y
+    \item crime=y, Class=republican: $->$ physician-fee-freeze=y
+  \end{itemize}
+\item Wniosek: zmiana algorytmu wyznaczy³a nam zmianê opcji politycznej. Algorytm FPGrowth preferuje regu³y zwi¹zanie z republikanami.
+\end{itemize}
+
+\subsection{FPGrowth 2}
+\begin{itemize}
+\item Parametry: -P 2 -I -1 -N 10 -T 1 -C 0.9 -D 0.05 -U 1.0 -M 0.1
+\item Metryka: lift
+\item Ciekawsze regu³y:
+  \begin{itemize}
+    \item crime=y $->$ religious-groups-in-schools=y
+    \item adoption-of-the-budget-resolution=y $->$ aid-to-nicaraguan-contras=y
+    \item aid-to-nicaraguan-contras=y $->$ adoption-of-the-budget-resolution=y
+    \item el-salvador-aid=y $->$ religious-groups-in-schools=y
+  \end{itemize}
+\item Wniosek: z metryk¹ lift nasz algorytm wyzby³ siê regu³ posiadaj¹cych klasyfikator. Baza wiedzy poszerza siê o nowe regu³y.
+\end{itemize}
+
+\subsection{FPGrowth 3}
+\begin{itemize}
+\item Parametry: -P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1
+\item Metryka: conviction
+\item Ciekawsze regu³y:
+  \begin{itemize}
+    \item superfund-right-to-sue=y $->$ crime=y
+    \item mx-missile=y $->$ adoption-of-the-budget-resolution=y
+    \item religious-groups-in-schools=y, crime=y $->$ el-salvador-aid=y
+    \item mx-missile=y $->$ anti-satellite-test-ban=y
+  \end{itemize}
+\item Wniosek: zmiana parametrów oraz metryka conviction daje nam jeszcze wiêcej regu³.
+\end{itemize}
+
+\subsection{Tertius 1}
+\begin{itemize}
+\item Parametry: -F 0.5 -C 0.5 -N 1.0 -L 5 -G 0 -c 0 -I 0 -P 0
+\item Ciekawsze regu³y:
+  \begin{itemize}
+    \item education-spending = n $->$ crime = n
+    \item duty-free-exports = n $->$ aid-to-nicaraguan-contras = n
+    \item el-salvador-aid = y and crime = y $->$ adoption-of-the-budget-resolution = n or physician-fee-freeze = y
+    \item aid-to-nicaraguan-contras = y and Class = democrat $->$ physician-fee-freeze = n or mx-missile = y
+  \end{itemize}
+\item Wniosek: algorytm Tertius daje wiêcej mo¿liwoœci ni¿ poprzednie algorytmy. Zamiast zbiorów, po obu stronach implikacji znajduj¹ siê wyra¿enia boolowskie, co czyni wyszukane regu³y bardziej interesuj¹cymi.
+\end{itemize}
+
+
+\section{Podsumowanie}
+
+\indent \indent Algorytmy wyszukuj¹ce regu³y asocjacyjnie niew¹tpliwie przydaj¹ siê do wydobywania wiedzy ze zgromadzonych danych. W wykorzystanym zbiorze zauwa¿yliœmy du¿¹ ró¿norodnoœæ znalezionych regu³ w zale¿noœci od uruchomionego algorytmu. Dlatego oczywistym wnioskiem (a tak¿e rad¹ na przysz³oœæ) jest: wykorzystanie kilku algorytmów na jednym zbiorze danych jest dobrym sposobem na uzyskanie ró¿norodnej wiedzy.
+
+Kolejn¹ obserwacj¹, jak¹ wyci¹gnêliœmy z przeprowadzonych eksperymentów jest brak niektórych atrybutów w wynikowych regu³ach. Dla przyk³adu: w ¿adnej z regu³ nie pojawia siê problem imigrantów (mimo wielokrotnych powtórzeñ testów). Nie oznacza to, ¿e nie mo¿emy wyci¹gn¹æ z tego ¿adnej wiedzy. Wrêcz przeciwnie - oznacza to, ¿e nastawienie do problemu imigrantów jest niezale¿ne od innych problemów i opcji politycznej, do której dana osoba nale¿y.
 
 \end{document}
-
