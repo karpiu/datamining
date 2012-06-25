@@ -9,7 +9,7 @@
 \usepackage{hyperref}
 \linespread{1.0}
 
-\hyphenation{Eks-plo-ra-cji zwi¹-za-nych ka¿-de-go pew-nych}
+\hyphenation{Eks-plo-ra-cji zwi¹-za-nych ka¿-de-go pew-nych Mo¿-na wszyst-kie}
 
 \title{Regu³y asocjacyjne w analizie danych}
 
@@ -48,22 +48,22 @@ wykorzystywano do klasyfikacji ludzi na demokratów/republikanów w zale¿noœci od 
 podanych problemów:
 
 \begin{enumerate}
-\item handicapped-infants
-\item water-project-cost-sharing
-\item adoption-of-the-budget-resolution
-\item physician-fee-freeze
-\item el-salvador-aid
-\item religious-groups-in-schools
-\item anti-satellite-test-ban
-\item aid-to-nicaraguan-contras
-\item mx-missile
-\item immigration
-\item synfuels-corporation-cutback
-\item education-spending
-\item superfund-right-to-sue
-\item crime
-\item duty-free-exports
-\item export-administration-act-south-africa
+\item handicapped-infants (wsparcie dla upoœledzonych noworodków)
+\item water-project-cost-sharing (podzia³ kosztów dla gospodarki wodnej)
+\item adoption-of-the-budget-resolution (akceptacja bud¿etu (rok 1984))
+\item physician-fee-freeze (wstrzymanie wyp³at lekarzom)
+\item el-salvador-aid (pomoc dla kraju El Salvador)
+\item religious-groups-in-schools (grupy religijne w szko³ach)
+\item anti-satellite-test-ban (zakaz prób militarnych w kwesti rakiet przeciwsatelitarnych)
+\item aid-to-nicaraguan-contras (wsparcie dla partyzantów w Nikaragui)
+\item mx-missile (budowa pocisku MX-Missile)
+\item immigration (wsparcie dla imigrantów)
+\item synfuels-corporation-cutback (zmniejszenie wydatków w Synfuels Corp.)
+\item education-spending (wydawanie pieniêdzy na edukacjê)
+\item superfund-right-to-sue (prawo do pozwania urzêdów pañstwowych w sprawie zwrotu kosztów za czyszczenie zanieczyszczonych terenów prywatnych)
+\item crime (walka z przestêpszoœci¹)
+\item duty-free-exports (bezc³owy eksport)
+\item export-administration-act-south-africa (zakaz eksportu materia³ów militarnych do po³udniowej afryki)
 \end{enumerate}
 
 Liczba demokratów i republikanów kszta³towa³a siê nastêpuj¹co (demokraci - kolor niebieski, republikanie - kolor czerwony):
@@ -141,51 +141,82 @@ tworzy warunkow¹ bazê wzorca. Na podstawie warunkowej bazy wzorca tworzymy warun
 Konstrukcja FP-drzewa wymaga $O(|D|)$ czasu, natomiast $2.$ krok wymaga $O(|$tablica nag³ówków$|^2 \times $g³êbokoœæ FP-drzewa$)$.
 W odró¿nieniu od $Apriori$, $FPGrowth$ nie wymaga za³adowania do pamiêci ca³ej bazy danych.
 
-\subsection{Tetrius}
+\subsection{Tertius}
 
-Algorytm Tetrius
+\indent \indent Algorytm Tertius buduje regu³y z par atrybut-wartoœæ z danych treningowych oraz porz¹dkuje je wed³ug tego, jak bardzo s¹ wiarygodne - czyli ile razy regu³a uznana jest za prawdziw¹ w danych treningowych.
 
-W testach wykorzystaliœmy ró¿ne formy parametryzacji w celu dog³êbnej analizy danych.
+Regu³a sk³ada siê z cia³a (body) i g³owy (head). Cia³o zawiera warunki (litera³y) potrzebne do spe³nienia danej regu³y i mo¿e sk³adaæ siê z dowolnej liczby litera³ów. G³owa zawiera zdarzenie, które wystêpuje, gdy regu³a jest prawdziwa. Podczas wyszukiwania regu³, Tertius rozpoczyna od pustej regu³y - takiej, która zawiera puste cia³o i pust¹ g³owê. Regu³a jest nastêpnie udoskonalana poprzez dodawanie par atrybut-wartoœæ w kolejnoœci, w jakiej pojawiaj¹ siê w zbiorze danych. Gdy to nast¹pi, algorytm zlicza ile razy regu³a jest spe³niona (zarówno cia³o i g³owa s¹ prawdziwe) oraz ile razy regu³a daje wynik false-positive (gdy cia³o jest prawd¹, ale g³owa jest nieprawdziwa).
+
+Jedn¹ z wad algorytmu Tertius jest jego wzglêdnie d³ugi czas pracy, który w du¿ej mierze zale¿y od liczby litera³ów w regu³ach. Zwiêkszenie dozwolonej liczby litera³ów zwiêksza czas pracy wyk³adniczo. Maj¹c $A$ atrybutów przyjmuj¹cych œrednio $V$ ró¿nych wartoœci, chc¹c wyszukiwaæ regu³y zawieraj¹ce litera³y d³ugoœci maksymalnie $n$, liczba mo¿liwych regu³ jest rzêdu $(AV)^n$.
 
 \section{Analiza Danych}
 
-\indent \indent Poni¿ej znajduje siê podsumowanie 7-miu testów wykonanych ró¿nymi algorytmami z ró¿nym stopniem parametryzacji. Po wykonaniu testów liczba znalezionych regu³ by³a zbyt du¿a, aby w czytelnej formie zaprezentowaæ je w niniejszej pracy. Dlatego pod ka¿dym z testów znajduje siê krótkie podsumowanie wraz kilkoma rêcznie wybranymi, ciekawymi (wed³ug autorów) regu³ami asocjacyjnymi.
+\indent \indent Poni¿ej znajduje siê podsumowanie 7-miu (z ok. 50-ciu) testów wykonanych ró¿nymi algorytmami z ró¿nym stopniem parametryzacji. Po wykonaniu testów liczba znalezionych regu³ by³a zbyt du¿a, aby w czytelnej formie zaprezentowaæ je w niniejszej pracy. Dlatego pod ka¿dym z testów znajduje siê krótkie podsumowanie wraz kilkoma rêcznie wybranymi, ciekawymi (wed³ug autorów) regu³ami asocjacyjnymi.
+
+Poni¿ej znajduje siê opis parametrów ka¿dego z algorytmów.
+
+\begin{enumerate}
+\item Apriori
+  \begin{itemize}
+    \item N : liczba najlepszych (wed³ug metryki) zwracanych regu³
+    \item T : metryka (0=confidence; 1=lift; 2=leverage)
+    \item C : minimalna wartoœæ metryki
+    \item D : delta. Wartoœæ zmniejszaj¹ca min-support z ka¿d¹ iteracj¹ algorytmu
+    \item U : górna granica min-support
+    \item M : dolna granica min-support
+  \end{itemize}
+\item FPGrowth
+  \begin{itemize}
+    \item oprócz parametrów opisanych powy¿ej, dodano:
+    \item I : maksymalna liczba elementów w zbiorach czêstych (-1=inf.)
+  \end{itemize}
+\item Tertius
+  \begin{itemize}
+    \item K : liczba najlepszych zwracanych regu³
+    \item F : minimalna wiarygodnoœæ regu³
+    \item N : szum. maksymalna proporcja instancji niespe³niaj¹cych danej regu³y
+    \item L : maksymalna liczba litera³ów w regule
+    \item G : gdzie negacja mo¿e wystêpowaæ w regu³ach (0=brak; 1=w ciele; 2=w g³owie; 3=w obu)
+  \end{itemize}
+\end{enumerate}
+
+Wybór przedstawionych regu³ jest podyktowany przez najwy¿sze wartoœci metryki w danym teœcie. Dane regu³y mówi¹ o tendencji wyboru dla pewnych wa¿nych sytuacji spo³ecznych. Wiedza ta zakrawa o takie sfery jak psychika i moralnoœæ cz³owieka, dlatego aby poprawnie przeanalizowaæ przedstawione wyniki potrzebna jest wiedza z zakresu psychologii, socjologii i filozofii, której autorzy niniejszej pracy niestety nie posiadaj¹. Potrafimy jedynie dokonaæ suchej analizy danych, wskazuj¹c mocne powi¹zania pomiêdzy pewnymi problemami ¿ycia publicznego, jednak interpretacje tych wyników pozostawiamy ekspertom.
 
 \subsection{Apriori 1}
 \begin{itemize}
-\item Parametry: -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1 
+\item Parametry: -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 
 \item Metryka: confidence
 \item Ciekawsze regu³y:
   \begin{itemize}
-    \item adoption-of-the-budget-resolution=y physician-fee-freeze=n $->$ Class=democrat
-    \item physician-fee-freeze=n aid-to-nicaraguan-contras=y $->$ Class=democrat
-    \item el-salvador-aid=n aid-to-nicaraguan-contras=y $->$ Class=democrat
+    \item (conf.=1.00) adoption-of-the-budget-resolution=y physician-fee-freeze=n $->$ Class=democrat
+    \item (conf.=1.00) physician-fee-freeze=n aid-to-nicaraguan-contras=y $->$ Class=democrat
+    \item (conf.=0.98) el-salvador-aid=n aid-to-nicaraguan-contras=y $->$ Class=democrat
   \end{itemize}
 \item Wniosek: standardowy zestaw parametrów polecany przez program nie daje spodziewanych rezultatów. Otrzymaliœmy same regu³y klasyfikuj¹ce demokratów. Nie mniej jednak z otrzymanego zestawu regu³ mo¿na wydobyæ jak¹œ wiedzê: demokraci maj¹ podobne zdanie na temat niektórych problemów spo³ecznych. Republikanie bardziej ró¿ni¹ siê w swoich pogl¹dach.
 \end{itemize}
 
 \subsection{Apriori 2}
 \begin{itemize}
-\item Parametry: -N 10 -T 1 -C 1.1 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1 
+\item Parametry: -N 10 -T 1 -C 1.1 -D 0.05 -U 1.0 -M 0.1
 \item Metryka: lift
 \item Ciekawsze regu³y:
   \begin{itemize}
-    \item physician-fee-freeze=n $->$ Class=democrat
-    \item Class=democrat $->$ physician-fee-freeze=n
-    \item adoption-of-the-budget-resolution=y $->$ physician-fee-freeze=n
-    \item physician-fee-freeze=n $->$ adoption-of-the-budget-resolution=y
+    \item (lift=1.67) physician-fee-freeze=n $->$ Class=democrat
+    \item (lift=1.67) Class=democrat $->$ physician-fee-freeze=n
+    \item (lift=1.63) adoption-of-the-budget-resolution=y $->$ physician-fee-freeze=n
+    \item (lift=1.63) physician-fee-freeze=n $->$ adoption-of-the-budget-resolution=y
   \end{itemize}
 \item Wniosek: zmiana metryki i lekka zmiana parametrów zaowocowa³a dwoma nowymi wnioskami: pierwszy znów dotyczy klasyfikacji. Zauwa¿my, ¿e dwie pierwsze regu³y tworz¹ równowa¿noœæ. Dostajemy wiêc mocn¹ zale¿noœæ miêdzy problemem physician-fee-freeze a byciem demokrat¹. Drugi wniosek jest dla nas bardziej interesuj¹cy. Kolejne dwie regu³y równie¿ tworz¹ równowa¿noœæ, co daje nam mocn¹ zale¿noœæ miêdzy problemami adoption-of-the-budget-resolution a physician-fee-freeze.
 \end{itemize}
 
 \subsection{Apriori 3}
 \begin{itemize}
-\item Parametry: -N 20 -T 2 -C 0.1 -D 0.1 -U 1.0 -M 0.2 -S -1.0 -c -1
+\item Parametry: -N 20 -T 2 -C 0.1 -D 0.1 -U 1.0 -M 0.2
 \item Metryka: leverage
 \item Ciekawsze regu³y:
   \begin{itemize}
-    \item anti-satellite-test-ban=y physician-fee-freeze=n aid-to-nicaraguan-contras=y $->$ el-salvador-aid=n
-    \item el-salvador-aid=n $->$ physician-fee-freeze=n anti-satellite-test-ban=y aid-to-nicaraguan-contras=y
+    \item (lev.=0.21) anti-satellite-test-ban=y physician-fee-freeze=n aid-to-nicaraguan-contras=y $->$ el-salvador-aid=n
+    \item (lev.=0.18) el-salvador-aid=n $->$ physician-fee-freeze=n anti-satellite-test-ban=y aid-to-nicaraguan-contras=y
   \end{itemize}
 \item Wniosek: zwiêkszenie liczby poszukiwanych regu³ oraz kolejna zmiana metryki da³y nam ciekawsze wyniki. 
 \end{itemize}
@@ -196,8 +227,8 @@ W testach wykorzystaliœmy ró¿ne formy parametryzacji w celu dog³êbnej analizy da
 \item Metryka: confidence
 \item Ciekawsze regu³y:
   \begin{itemize}
-    \item el-salvador-aid=y, Class=republican: $->$ physician-fee-freeze=y
-    \item crime=y, Class=republican: $->$ physician-fee-freeze=y
+    \item (conf.=0.99) el-salvador-aid=y, Class=republican: $->$ physician-fee-freeze=y
+    \item (conf.=0.98) crime=y, Class=republican: $->$ physician-fee-freeze=y
   \end{itemize}
 \item Wniosek: zmiana algorytmu wyznaczy³a nam zmianê opcji politycznej. Algorytm FPGrowth preferuje regu³y zwi¹zanie z republikanami.
 \end{itemize}
@@ -208,10 +239,10 @@ W testach wykorzystaliœmy ró¿ne formy parametryzacji w celu dog³êbnej analizy da
 \item Metryka: lift
 \item Ciekawsze regu³y:
   \begin{itemize}
-    \item crime=y $->$ religious-groups-in-schools=y
-    \item adoption-of-the-budget-resolution=y $->$ aid-to-nicaraguan-contras=y
-    \item aid-to-nicaraguan-contras=y $->$ adoption-of-the-budget-resolution=y
-    \item el-salvador-aid=y $->$ religious-groups-in-schools=y
+    \item (lift=1.58) crime=y $->$ religious-groups-in-schools=y
+    \item (lift=1.58) adoption-of-the-budget-resolution=y $->$ aid-to-nicaraguan-contras=y
+    \item (lift=1.53) aid-to-nicaraguan-contras=y $->$ adoption-of-the-budget-resolution=y
+    \item (lift=1.53) el-salvador-aid=y $->$ religious-groups-in-schools=y
   \end{itemize}
 \item Wniosek: z metryk¹ lift nasz algorytm wyzby³ siê regu³ posiadaj¹cych klasyfikator. Baza wiedzy poszerza siê o nowe regu³y.
 \end{itemize}
@@ -222,17 +253,17 @@ W testach wykorzystaliœmy ró¿ne formy parametryzacji w celu dog³êbnej analizy da
 \item Metryka: conviction
 \item Ciekawsze regu³y:
   \begin{itemize}
-    \item superfund-right-to-sue=y $->$ crime=y
-    \item mx-missile=y $->$ adoption-of-the-budget-resolution=y
-    \item religious-groups-in-schools=y, crime=y $->$ el-salvador-aid=y
-    \item mx-missile=y $->$ anti-satellite-test-ban=y
+    \item (conv.=4.96) superfund-right-to-sue=y $->$ crime=y
+    \item (conv.=3.62) mx-missile=y $->$ adoption-of-the-budget-resolution=y
+    \item (conv.=3.53) religious-groups-in-schools=y, crime=y $->$ el-salvador-aid=y
+    \item (conv.=3.30) mx-missile=y $->$ anti-satellite-test-ban=y
   \end{itemize}
 \item Wniosek: zmiana parametrów oraz metryka conviction daje nam jeszcze wiêcej regu³.
 \end{itemize}
 
 \subsection{Tertius 1}
 \begin{itemize}
-\item Parametry: -F 0.5 -C 0.5 -N 1.0 -L 5 -G 0 -c 0 -I 0 -P 0
+\item Parametry: -K 10 -F 0.5 -C 0.5 -N 1.0 -L 5 -G 0
 \item Ciekawsze regu³y:
   \begin{itemize}
     \item education-spending = n $->$ crime = n
